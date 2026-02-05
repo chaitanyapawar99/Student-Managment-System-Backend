@@ -1,36 +1,51 @@
 # ⚙️ Student Management System — Backend (Spring Boot)
 
-This repository contains the **Backend** of a Student Management System built using **Spring Boot**. It exposes REST APIs for managing student records and follows a clean, layered architecture suitable for production-grade applications.
+This repository contains the **Backend** of the **Student Management System**, built using **Spring Boot**. It exposes secure, RESTful APIs for managing student records and follows a clean, industry-standard layered architecture. It is designed to work seamlessly with a React frontend hosted in a separate repository.
 
 ---
 
-## 🎯 Objective
+## 🚀 Overview
 
-The purpose of this backend is to:
+This backend application provides:
 
-* Expose RESTful APIs for CRUD operations
-* Demonstrate layered architecture (Controller–Service–Repository)
-* Integrate Spring Boot with MySQL using JPA/Hibernate
-* Implement global exception handling
-* Enable cross-origin communication with a React frontend
+* REST APIs for full CRUD operations on students
+* Layered architecture (Controller → Service → Repository)
+* MySQL integration using Spring Data JPA & Hibernate
+* Global exception handling
+* CORS configuration for frontend integration
+* Optional JWT-based authentication (if enabled)
+
+It is built to be **scalable, maintainable, and interview-ready**.
 
 ---
 
 ## ✨ Features
 
-* ✅ REST APIs for Students
-* ✅ Spring Data JPA + Hibernate ORM
-* ✅ MySQL Database Integration
-* ✅ Layered Architecture
-* ✅ Global Exception Handling (`@RestControllerAdvice`)
-* ✅ CORS Configuration for frontend integration
-* ✅ Clean and maintainable code structure
+### 🔹 Core Features
+
+* RESTful APIs for Student Management
+* Spring Data JPA with Hibernate ORM
+* MySQL database integration
+* Clean layered architecture
+* Global Exception Handling (`@RestControllerAdvice`)
+* CORS configuration for React frontend
+* Lombok for reducing boilerplate code
+
+### 🔹 (Optional) Security Features
+
+* JWT-based authentication
+* Spring Security integration
+* Role-based access (Admin / User)
 
 ---
 
 ## 🏗️ Architecture
 
 ```
+Client (React)
+        ↓
+Spring Security (Optional JWT Filter)
+        ↓
 Controller → Service → Repository → Database
 ```
 
@@ -38,13 +53,14 @@ Controller → Service → Repository → Database
 
 ## 🛠️ Technologies Used
 
-* Java 21
-* Spring Boot
+* **Java 21**
+* **Spring Boot**
 * Spring Web
 * Spring Data JPA
 * Hibernate
 * MySQL
 * Lombok
+* (Optional) Spring Security + JWT
 
 ---
 
@@ -86,7 +102,7 @@ com.coding.SpringbootCRUD
 POST /auth/login
 ```
 
-### Students
+### Students (Secured if JWT enabled)
 
 ```
 GET    /students
@@ -98,12 +114,12 @@ DELETE /students/{id}
 
 ---
 
-## ▶️ How to Run
+## ▶️ How to Run Locally
 
-### 1️⃣ Clone the repository
+### 1️⃣ Clone this repository
 
 ```bash
-git clone https://github.com/your-username/student-backend.git
+git clone https://github.com/chaitanyapawar99/student-backend.git
 cd student-backend
 ```
 
@@ -124,7 +140,7 @@ spring.jpa.show-sql=true
 mvn spring-boot:run
 ```
 
-Backend will start on:
+Backend will start at:
 
 ```
 http://localhost:8080
@@ -132,23 +148,81 @@ http://localhost:8080
 
 ---
 
-## 💡 What this backend demonstrates
+## 🔗 Frontend Connection (CORS)
 
-* How Spring Boot builds REST APIs
+Ensure CORS is enabled for React in:
+
+```
+CorsConfig.java
+```
+
+Example:
+
+```java
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE");
+            }
+        };
+    }
+}
+```
+
+---
+
+## 🔐 Authentication (If JWT is enabled)
+
+If JWT is enabled:
+
+* `/auth/login` generates a JWT token
+* All other endpoints require:
+
+```
+Authorization: Bearer <your-token>
+```
+
+A custom JWT filter validates the token before reaching controllers.
+
+---
+
+## 🧠 What this backend demonstrates
+
+* How to build REST APIs with Spring Boot
 * How JPA maps Java objects to database tables
-* How controllers, services, and repositories work together
+* How controllers, services, and repositories interact
 * How to handle exceptions globally
+* How to integrate a React frontend with Spring Boot
+
+---
+
+## 🔗 Frontend Repository
+
+This backend works with the following frontend repository:
+
+```
+https://github.com/chaitanyapawar99/Student-Managment-System-Frontend
+```
+
+*(If your frontend repo name changes, tell me and I’ll update this.)*
 
 ---
 
 ## 🔮 Future Enhancements
 
-* Add JWT Authentication
-* Add DTO Layer
-* Add Pagination
-* Add Logging (SLF4J + Logback)
-* Deploy to cloud
+* Add DTO layer
+* Implement database-based authentication
+* Add pagination & sorting
+* Add logging (SLF4J + Logback)
+* Deploy to cloud (Render / Railway / AWS)
 
 ---
 
-⭐ If you find this useful, please give it a star!
+⭐ If you find this project useful, please give it a star!
